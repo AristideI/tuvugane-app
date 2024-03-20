@@ -17,8 +17,24 @@ const Tabs = createBottomTabNavigator();
 
 function AuthStack() {
   return (
-    <Stacks.Navigator>
-      <Stacks.Screen name="AuthHome" component={AuthHome} />
+    <Stacks.Navigator
+      screenOptions={{
+        contentStyle: {
+          backgroundColor: "black",
+        },
+        headerTintColor: "white",
+        headerStyle: {
+          backgroundColor: "black",
+        },
+      }}
+    >
+      <Stacks.Screen
+        name="AuthHome"
+        component={AuthHome}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stacks.Screen name="Login" component={Login} />
       <Stacks.Screen name="Signup" component={Signup} />
     </Stacks.Navigator>
@@ -38,7 +54,14 @@ function MainTabs() {
 
 function LoggedStack() {
   return (
-    <Stacks.Navigator>
+    <Stacks.Navigator
+      screenOptions={{
+        contentStyle: {
+          backgroundColor: "black",
+        },
+        headerTintColor: "white",
+      }}
+    >
       <Stacks.Screen name="MainTabs" component={MainTabs} />
       <Stacks.Screen name="Messages" component={Messages} />
       <Stacks.Screen name="Conversation" component={Conversation} />
@@ -59,7 +82,7 @@ function Navigation() {
 export default function App() {
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <AuthContextProvider>
         <Navigation></Navigation>
       </AuthContextProvider>
