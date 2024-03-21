@@ -1,0 +1,6 @@
+fullName
+    userName
+    email
+    password
+    gender
+    profilePic

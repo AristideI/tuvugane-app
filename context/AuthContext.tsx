@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { AuthContextProps } from "../interfaces/propsInterfaces";
-import { User } from "../interfaces/models.interfaces";
+import { User, UserResp } from "../interfaces/models.interfaces";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthContext = createContext<AuthContextProps>({
   user: null,
   token: null,
   isLogged: false,
-  login: ({ user, token }: { user: User; token: string }) => {},
+  login: ({ user, token }: { user: UserResp; token: string }) => {},
   logout: () => {},
 });
 
@@ -16,21 +16,23 @@ export default function AuthContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserResp | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const isLogged = !!token;
+  const [isLogged, setIsLogged] = useState<boolean>(false);
 
-  function login({ user, token }: { user: User; token: string }) {
+  async function login({ user, token }: { user: UserResp; token: string }) {
     setUser(user);
     setToken(token);
-    AsyncStorage.setItem("token", token as string);
-    AsyncStorage.setItem("user", JSON.stringify(user));
+    setIsLogged(true);
+    await AsyncStorage.setItem("token", token as string);
+    await AsyncStorage.setItem("user", JSON.stringify(user));
   }
 
-  function logout() {
+  async function logout() {
     setUser(null);
     setToken(null);
-    AsyncStorage.removeItem("token");
+    setIsLogged(false);
+    await AsyncStorage.removeItem("token");
   }
 
   useEffect(() => {
@@ -39,12 +41,13 @@ export default function AuthContextProvider({
       const user = JSON.parse((await AsyncStorage.getItem("user")) as string);
       if (token && user) {
         setToken(token);
-        setUser(JSON.parse((await AsyncStorage.getItem("user")) as string));
+        setUser(user);
+        setIsLogged(true);
       } else {
         setUser(null);
         setToken(null);
-        AsyncStorage.removeItem("token");
-        AsyncStorage.removeItem("user");
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("user");
       }
     }
     getToken();

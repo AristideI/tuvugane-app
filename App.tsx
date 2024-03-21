@@ -32,10 +32,17 @@ function AuthStack() {
         name="AuthHome"
         component={AuthHome}
         options={{
+          title: "",
           headerShown: false,
         }}
       />
-      <Stacks.Screen name="Login" component={Login} />
+      <Stacks.Screen
+        name="Login"
+        component={Login}
+        options={{
+          title: "",
+        }}
+      />
       <Stacks.Screen name="Signup" component={Signup} />
     </Stacks.Navigator>
   );
