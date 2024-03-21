@@ -11,6 +11,12 @@ import Messages from "./screens/messages/Messages";
 import Conversation from "./screens/messages/Conversation";
 import PeopleProfile from "./screens/Logged/PeopleProfile";
 import AuthContextProvider, { useAuthContext } from "./context/AuthContext";
+import Logo from "./components/ui/headers/Logo";
+import Post from "./screens/Logged/Post";
+import Profile from "./screens/Logged/Profile";
+import PressableIcon from "./components/ui/headers/PressableIcon";
+import { Ionicons } from "@expo/vector-icons";
+import ProfileIcon from "./components/ui/headers/ProfileIcon";
 
 const Stacks = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -49,12 +55,78 @@ function AuthStack() {
 }
 
 function MainTabs() {
+  const { user } = useAuthContext();
   return (
-    <Tabs.Navigator>
-      <Tabs.Screen name="Feeds" component={Feeds} />
-      <Tabs.Screen name="People" component={People} />
-      <Tabs.Screen name="Post" component={Signup} />
-      <Tabs.Screen name="Profile" component={Signup} />
+    <Tabs.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: "red",
+        tabBarInactiveTintColor: "white",
+        tabBarStyle: {
+          backgroundColor: "black",
+        },
+        tabBarShowLabel: false,
+      }}
+    >
+      <Tabs.Screen
+        name="Feeds"
+        component={Feeds}
+        options={({ navigation }) => ({
+          headerLeft: () => <Logo />,
+          headerRight: () => (
+            <PressableIcon
+              onPress={() => navigation.navigate("Messages")}
+              name="logo-wechat"
+            />
+          ),
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerTintColor: "white",
+          title: "",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Ionicons name="home" size={30} color="red" />
+            ) : (
+              <Ionicons name="home-outline" size={30} color="white" />
+            ),
+        })}
+      />
+      <Tabs.Screen
+        name="People"
+        component={People}
+        options={{
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Ionicons name="people" size={30} color="red" />
+            ) : (
+              <Ionicons name="people-outline" size={30} color="white" />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="Post"
+        component={Post}
+        options={{
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Ionicons name="add-circle" size={30} color="red" />
+            ) : (
+              <Ionicons name="add-circle-outline" size={30} color="white" />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <ProfileIcon uri={user?.profilePic as string} focused={true} />
+            ) : (
+              <ProfileIcon uri={user?.profilePic as string} focused={false} />
+            ),
+        }}
+      />
     </Tabs.Navigator>
   );
 }
@@ -67,6 +139,7 @@ function LoggedStack() {
           backgroundColor: "black",
         },
         headerTintColor: "white",
+        headerShown: false,
       }}
     >
       <Stacks.Screen name="MainTabs" component={MainTabs} />
