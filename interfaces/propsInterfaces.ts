@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { UserResp } from "./models.interfaces";
+import { Image } from "react-native";
 
 export interface NavigationProps {
   children: ReactNode;

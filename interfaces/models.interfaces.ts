@@ -16,3 +16,23 @@ export interface UserResp {
   gender: string;
   bio: string;
 }
+
+export interface Comment {
+  _id: string;
+  content: string;
+  user: UserResp;
+}
+
+export interface CreatePostDTO {
+  content: string;
+  image: string;
+}
+
+export interface PostResp {
+  _id: string;
+  content: string;
+  image: string;
+  likes: string[];
+  comments: Comment[];
+  user: UserResp;
+}

@@ -1,18 +1,25 @@
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
+import PostComponent from "../../components/feeds/PostComponent";
 
 export default function Feeds() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      <PostComponent />
+      <PostComponent />
+      <PostComponent />
+      <PostComponent />
+      <PostComponent />
+      <PostComponent />
+      <PostComponent />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "black",
+    paddingHorizontal: 10,
+    paddingTop: 20,
   },
 });
